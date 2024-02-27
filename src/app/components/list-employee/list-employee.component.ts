@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import {MatTableDataSource} from '@angular/material/table';
+import {MatPaginator, MatPaginatorModule} from '@angular/material/paginator';
 
 export interface PeriodicElement {
   name: string;
@@ -27,9 +28,15 @@ const ELEMENT_DATA: PeriodicElement[] = [
   styleUrls: ['./list-employee.component.css']
 })
 
-export class ListEmployeeComponent {
+export class ListEmployeeComponent implements AfterViewInit  {
   displayedColumns: string[] = ['position', 'name', 'weight', 'symbol'];
   dataSource = new MatTableDataSource(ELEMENT_DATA);
+
+  @ViewChild(MatPaginator) paginator: any = MatPaginator;
+
+  ngAfterViewInit () {
+    this.dataSource.paginator = this.paginator;
+  }
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
